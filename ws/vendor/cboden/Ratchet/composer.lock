@@ -1,0 +1,49 @@
+{
+    "hash": "2c082c116d4e2eb8846c78e5c1ff0f58",
+    "packages": [
+        {
+            "package": "evenement/evenement",
+            "version": "v1.0.0"
+        },
+        {
+            "package": "guzzle/common",
+            "version": "v2.8.6"
+        },
+        {
+            "package": "guzzle/http",
+            "version": "v2.8.6"
+        },
+        {
+            "package": "guzzle/parser",
+            "version": "v2.8.6"
+        },
+        {
+            "package": "react/event-loop",
+            "version": "v0.1.1"
+        },
+        {
+            "package": "react/socket",
+            "version": "v0.1.1"
+        },
+        {
+            "package": "react/stream",
+            "version": "v0.1.1"
+        },
+        {
+            "package": "symfony/event-dispatcher",
+            "version": "v2.1.0"
+        },
+        {
+            "package": "symfony/http-foundation",
+            "version": "v2.1.0"
+        }
+    ],
+    "packages-dev": null,
+    "aliases": [
+
+    ],
+    "minimum-stability": "stable",
+    "stability-flags": [
+
+    ]
+}

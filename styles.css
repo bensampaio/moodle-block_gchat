@@ -1,0 +1,215 @@
+/********************************************************
+**
+** Block name: Global Chat
+** Creation Date: 15/09/2012
+** Author: Bruno Sampaio
+** Author URI: http://pessoa.fct.unl.pt/b.sampaio
+**
+*********************************************************/
+
+/* Chat Windows
+------------------------*/
+#gchat .chat_window {
+	width: 250px;
+	height: 280px;
+	border-style: solid;
+	border-bottom: 0;
+	right: 0;
+	bottom: 0;
+	position: absolute;
+}
+
+#gchat .chat_window.collapsed {
+	height: 30px;
+}
+
+#gchat .chat_window,
+#gchat .chat_window .header,
+#gchat .chat_window .messages,
+#gchat .chat_window .reply {
+	border-width: 1px;
+	border-color: #888; /*[[setting:chat_window_border_color]]*/
+}
+
+#gchat .chat_window .header,
+#gchat .chat_window .messages,
+#gchat .chat_window .reply {
+	width: 100%;
+	-webkit-box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	box-sizing:border-box;
+}
+
+#gchat .chat_window .header,
+#gchat .chat_window .reply {
+	height: 30px;
+}
+
+#gchat .chat_window .header {
+	font-weight: bold;
+	padding: 5px;
+	border-bottom-style: solid;
+	background-color: #2F922C; /*[[setting:chat_window_header_color]]*/
+}
+
+#gchat .chat_window.new_messages .header {
+	background-color: #5ECC76; /*[[setting:chat_window_new_header_color]]*/
+}
+
+#gchat .chat_window .header a {
+	font-size: 14px;
+	line-height: 20px;
+	color: #B0DDBA; /*[[setting:chat_window_text_color]]*/
+}
+
+#gchat .chat_window.new_messages .header a {
+	color: black;
+}
+
+#gchat .chat_window .header .actions {
+	float: right;
+	height: 20px;
+}
+
+#gchat .chat_window .header .actions img {
+	float: right;
+	height: 16px;
+	padding: 2px;
+	cursor: pointer;
+}
+
+#gchat .chat_window .messages {
+	font-size: 12px;
+	height: 220px;
+	padding: 5px 10px;
+	overflow-y: auto;
+	background-color: white;
+}
+
+#gchat .chat_window .messages p {
+	line-height: 1.3em;
+	margin: 0;
+	display: inline;
+}
+
+#gchat .chat_window .messages p.user {
+	font-weight: bold;
+	margin-top: 5px;
+	margin-right: 5px;
+}
+
+#gchat .chat_window .messages .border {
+	width: 100%;
+	margin: 5px 0px;
+	border-bottom: 1px solid #DDD;
+}
+
+#gchat .chat_window .reply {
+	border-top-style: solid;
+}
+
+#gchat .chat_window .reply form {
+	width: 100%;
+	height: 100%;
+	padding: 0;
+	margin: 0;
+}
+
+#gchat .chat_window .reply input {
+	height: 30px;
+	padding: 3px;
+	margin: 0;
+	border: 0 !important;
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	border-radius: 0;
+	-webkit-box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	box-sizing:border-box;
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none;
+	outline: none;
+}
+
+#gchat .chat_window .reply input[type=text] {
+	float: left;
+	width: 80%;
+	padding: 3px 5px;
+}
+
+#gchat .chat_window .reply input[type=submit] {
+	float: right;
+	width: 20%;
+}
+
+
+/* Block
+------------------------*/
+.block_gchat .column {
+	width: 100%;
+	padding: 5px;
+	-webkit-box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	box-sizing:border-box;
+	text-align: center;
+	display: block !important;
+}
+
+.block_gchat .column.user:hover {
+	background-color: #DDD;
+	cursor: pointer;
+}
+
+.block_gchat .column table {
+	width: 100%;
+	margin: 0;
+}
+
+.block_gchat .column table td {
+	padding: 0;
+}
+
+.block_gchat .column .picture,
+.block_gchat .column .picture img {
+	width: 24px;
+}
+
+.block_gchat .column .picture img {
+	height: 24px;
+	display: block;
+}
+
+.block_gchat .column .name {
+	text-align: left;
+}
+
+.block_gchat .column .name p {
+	margin: 0px 10px;
+}
+
+.block_gchat .column .status {
+	width: 20px;
+}
+
+.block_gchat .column .status span {
+	width: 8px;
+	height: 8px;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	margin: 0 auto;
+	display: block;
+}
+
+.block_gchat .column .status span.online {
+	background-color: green;
+}
+
+.block_gchat .column .status span.away {
+	background-color: yellow;
+}
+
+.block_gchat .column .status span.offline {
+	background-color: grey;
+}

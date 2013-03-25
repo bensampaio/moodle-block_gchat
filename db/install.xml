@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="blocks/gchat/db" VERSION="20120917" COMMENT="XMLDB file for Moodle blocks/gchat"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
+>
+  <TABLES>
+    <TABLE NAME="block_gchat_users" COMMENT="Table to store online users" NEXT="block_gchat_sessions">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="status"/>
+        <FIELD NAME="status" TYPE="char" LENGTH="10" NOTNULL="true" DEFAULT="online" SEQUENCE="false" PREVIOUS="id" NEXT="userid"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="status"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="userid"/>
+        <KEY NAME="userid" TYPE="foreign-unique" FIELDS="userid" REFTABLE="user" REFFIELDS="id" PREVIOUS="primary"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="block_gchat_sessions" COMMENT="Table to store global chat sessions." PREVIOUS="block_gchat_users" NEXT="block_gchat_user_sessions">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="userfrom"/>
+        <FIELD NAME="userfrom" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="id" NEXT="userto"/>
+        <FIELD NAME="userto" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="userfrom"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="userfrom"/>
+        <KEY NAME="userfrom" TYPE="foreign" FIELDS="userfrom" REFTABLE="user" REFFIELDS="id" PREVIOUS="primary" NEXT="userto"/>
+        <KEY NAME="userto" TYPE="foreign" FIELDS="userto" REFTABLE="user" REFFIELDS="id" PREVIOUS="userfrom" NEXT="users"/>
+        <KEY NAME="users" TYPE="unique" FIELDS="userfrom, userto" PREVIOUS="userto"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="block_gchat_user_sessions" COMMENT="Table to store open sessions for each user." PREVIOUS="block_gchat_sessions" NEXT="block_gchat_messages">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="isopen"/>
+        <FIELD NAME="isopen" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" DEFAULT="1" SEQUENCE="false" PREVIOUS="id" NEXT="unseen"/>
+        <FIELD NAME="unseen" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" DEFAULT="1" SEQUENCE="false" PREVIOUS="isopen" NEXT="sessionid"/>
+        <FIELD NAME="sessionid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="unseen" NEXT="userid"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="sessionid"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="sessionid"/>
+        <KEY NAME="sessionid" TYPE="foreign" FIELDS="sessionid" REFTABLE="block_gchat_sessions" REFFIELDS="id" PREVIOUS="primary" NEXT="userid"/>
+        <KEY NAME="userid" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id" PREVIOUS="sessionid" NEXT="user_session"/>
+        <KEY NAME="user_session" TYPE="unique" FIELDS="sessionid, userid" PREVIOUS="userid"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="block_gchat_messages" COMMENT="Table to store global chat messages for each session." PREVIOUS="block_gchat_user_sessions">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="text"/>
+        <FIELD NAME="text" TYPE="char" LENGTH="1333" NOTNULL="true" SEQUENCE="false" PREVIOUS="id" NEXT="timecreated"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="false" DEFAULT="0" SEQUENCE="false" PREVIOUS="text" NEXT="sessionid"/>
+        <FIELD NAME="sessionid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="timecreated" NEXT="userid"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="sessionid"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="sessionid"/>
+        <KEY NAME="sessionid" TYPE="foreign" FIELDS="sessionid" REFTABLE="block_gchat_sessions" REFFIELDS="id" PREVIOUS="primary" NEXT="userid"/>
+        <KEY NAME="userid" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id" PREVIOUS="sessionid"/>
+      </KEYS>
+    </TABLE>
+  </TABLES>
+</XMLDB>
