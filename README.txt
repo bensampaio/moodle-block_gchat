@@ -1,11 +1,23 @@
 GLOBAL CHAT - MOODLE BLOCK
 
 DESCRIPTION
+-----------
 
-To use this plugin you must run a server on the command line. This server uses the WebSocket protocol to establish a connection between users, avoiding the need for ajax requests.
+This plugin introduces a chat for Moodle very similar to Google Chat or Facebook Chat. It uses a block to list all online users that are part of all courses a user is subscribed to, and opens a chat window on the bottom of the page when a online user is clicked.
+
+The advantages of this chat are:
+- Users don't need to open a separate window to use this chat, while Moodle activity chat needs them to do so;
+- A user can establish a real time conversation with other online users subscribed to the courses this user belongs to;
+- Users can change between pages and their open conversations will always be there;
+
+If you are a student use it to collaborate with your colleagues, or to ask questions to your teachers.
+If you are a teacher use it to communicate with your students individually.
+
+We believe Moodle needs a different concept of a chat, that's why we decided to create this one. It still needs some improvement, but first we would like to know what people think about this idea :)
 
 
 CONTENTS ORGANISATION
+---------------------
 
 	FOLDERS:
 	- db: contains the "install.xml" file with database structure and the "access.php" file needed for Moodle 2.4;
@@ -26,11 +38,17 @@ CONTENTS ORGANISATION
 	- version.php: block version information;
 	
 
-HOW TO RUN
+HOW TO USE
+----------
 
-The server script is located in blocks/gchat/ws/run.php.
+To use this plugin you must run a CLI script which will be responsible for managing the chat sessions and the communication between users. This script initialises a server that uses the WebSocket protocol to establish a connection between users, avoiding the need for ajax requests. With this approach the client browser doesn't need to constantly ask the server if there are updates because the server will send new data when other user starts a conversations or sends a message.
 
-To run it you must use the following commands: 
+The server script is located in "blocks/gchat/ws" and it is the "run.php" file. On the following line the path to this file is referred to by <path_to_run_script>.
+
+
+TRY IT
+
+If you want to try the server put the following commands on a command line: 
 
 If PHP is on other location then usual, run the following:
 export PATH=<path_to_php>:$PATH 
@@ -38,3 +56,14 @@ export PATH=<path_to_php>:$PATH
 
 cd <path_to_run_script>
 php <run_script_name>.php
+
+
+DEPLOY IT
+
+If you like the concept and you want to install this chat on your Moodle site we recommend you read this first: http://socketo.me/docs/deploy. You don't need to do everything that's explained on that page but that depends on the kind of security you need for you Moodle site.
+
+On that page you will find a reference to Supervisor. We recommend you use it to run the chat server script, so in case the script crashes it is immediately restarted. Besides that, you should create a script to run when your machine starts up that would be responsible for running supervisor.
+
+If you decide to use supervisor, the command to run the script on the "supervisord.conf" file should look like the following: "ulimit -n 10000 && cd <path_to_run_script> && php run.php".
+
+In case you don't understand something just contact me.
