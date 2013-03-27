@@ -13,7 +13,7 @@ The advantages of this chat are:
 If you are a student use it to collaborate with your colleagues, or to ask questions to your teachers.
 If you are a teacher use it to communicate with your students individually.
 
-We believe Moodle needs a different concept of a chat, that's why we decided to create this one. It still needs some improvement, but first we would like to know what people think about this idea :)
+We believe Moodle needs a different chat concept, that's why we decided to create this plugin. It still needs some improvement, but first we would like to know what people think about this idea :)
 
 
 CONTENTS ORGANISATION
@@ -24,7 +24,8 @@ CONTENTS ORGANISATION
 	- lang: contains languages files for English and Portuguese (Portugal);
 	- pix: contains image files used on the chat window;
 	- ws: contains the files needed to run the chat server:
-		- vendor: contains the Ratchet PHP library which provides a WebSocket protocol implementation; 
+		- scripts: contains example scripts to run on server startup and to restart the server if anything goes wrong (more about this below on next section);
+		- vendor: contains the Ratchet PHP library which provides a WebSocket protocol implementation;
 		- hash.php: implementation of a HashMap in PHP;
 		- server.php: the chat server logic;
 		- run.php: the CLI script to start the server;
@@ -60,10 +61,16 @@ php <run_script_name>.php
 
 DEPLOY IT
 
-If you like the concept and you want to install this chat on your Moodle site we recommend you read this first: http://socketo.me/docs/deploy. You don't need to do everything that's explained on that page but that depends on the kind of security you need for you Moodle site.
+If you like the concept and you want to install this chat on your Moodle site I recommend you read this first: http://socketo.me/docs/deploy. You don't need to do everything that's explained on that page but that depends on the kind of security you need for you Moodle site.
 
-On that page you will find a reference to Supervisor. We recommend you use it to run the chat server script, so in case the script crashes it is immediately restarted. Besides that, you should create a script to run when your machine starts up that would be responsible for running supervisor.
+On that page you will find a reference to Supervisor, which I recommend you use to run the chat server script, so in case the script crashes it is immediately restarted. Besides that, you should create a script to run when your machine starts up that would be responsible for starting up supervisor. Inside "ws/scripts" there are two scripts that you can use for those purposes:
 
-If you decide to use supervisor, the command to run the script on the "supervisord.conf" file should look like the following: "ulimit -n 10000 && cd <path_to_run_script> && php run.php".
+	- The "supervisord.conf" must be copied to /usr/local/etc/supervisord.conf. Before using it you must open this file, then locate <$CFG->dirroot> and change this by the absolute path to your Moodle root folder;
+	- The "moodle_gchat" file must be copied to the /etc/init.d folder on a linux system, this way it will be executed when your machine starts. To execute this script you must provide one of the following commands:
+		- start: this starts supervisor;
+		- restart: this kills the server script and then supervisor will restart it;
+		- stop: this stops supervisor and then the server script.
+
+So after copying the files above to their respective folders and after making the necessary changes, you can start the server with the following command: "cd /etc/init.d && sudo ./moodle_chat start".
 
 In case you don't understand something just contact me.

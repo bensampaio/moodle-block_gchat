@@ -1,0 +1,45 @@
+#! /bin/sh
+### BEGIN INIT INFO
+# Provides:          rc.local
+# Required-Start:    $remote_fs $syslog $all
+# Required-Stop:
+# Default-Start:     2 3 4 5
+# Default-Stop:
+# Short-Description: Run Chat server
+### END INIT INFO
+
+
+PATH=/sbin:/usr/sbin:/bin:/usr/bin
+
+. /lib/init/vars.sh
+. /lib/lsb/init-functions
+
+do_start() {
+	supervisord -c /usr/local/etc/supervisord.conf
+}
+
+do_restart() {
+	ps aux | grep -ie "php run.ph[p]" | awk '{print $2}' | xargs kill -9
+}
+
+do_stop() {
+	ps aux | grep -ie supervisor[d] | awk '{print $2}' | xargs kill -9
+	ps aux | grep -ie ulimit | grep -ie ph[p] | awk '{print $2}' | xargs kill -9
+	do_restart
+}
+
+case "$1" in
+    start)
+		do_start
+        ;;
+    restart|reload|force-reload)
+        do_restart
+        ;;
+    stop)
+		do_stop
+        ;;
+    *)
+        echo "Usage: $0 start|restart|stop" >&2
+        exit 3
+        ;;
+esac
