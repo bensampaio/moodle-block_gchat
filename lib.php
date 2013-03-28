@@ -327,13 +327,9 @@ function block_gchat_load_messages($session_id) {
 	global $DB;
 	
 	// Get last messages
-	$query = 
-		"SELECT id, text, userid FROM {".CHAT_MESSAGES_TABLE."}
-		WHERE sessionid = ?
-		ORDER BY timecreated DESC
-		LIMIT 10";
+	$query = "SELECT id, text, userid FROM {".CHAT_MESSAGES_TABLE."} WHERE sessionid = ? ORDER BY timecreated DESC, id DESC LIMIT 10";
 	
-	return $DB->get_records_sql($query, array($session_id));
+	return array_reverse($DB->get_records_sql($query, array($session_id)));
 }
 
 

@@ -21,15 +21,14 @@ M.block_gchat = {
 	 * @param object imgs - the images urls needed.
 	 */
 	init : function(Y, server_name, server_port, server_url, chat_container, user, imgs) {
-		var self = this;
 		
 		// Set Global Values
-		self.chat_container = chat_container;
-		self.user = user;
-		self.imgs = imgs;
+		this.chat_container = chat_container;
+		this.user = user;
+		this.imgs = imgs;
 
 		// Create Chat Windows Container
-		var container = Y.one(self.chat_container);
+		var container = Y.one(this.chat_container);
 		var chat = Y.Node.create('<div id="gchat"></div>');
 		container.append(chat);
 
@@ -43,58 +42,77 @@ M.block_gchat = {
 		if ("WebSocket" in window) {
 			
 			//Start Connection
-			var conn = new WebSocket('ws://'+server_name+':'+server_port);
-
-			conn.onopen = function() {
-
-				// Update Status to Online
-				self.update_status(Y, conn, user.id, 'online');
-			};
-
-			conn.onmessage = function(msg) {
-				// Parse data received.
-		        var data = Y.JSON.parse(msg.data);
-
-				if(data.action && data.params) {
-					switch(data.action) {
-
-						// When the current user or other user goes online.
-						case 'get_users_and_sessions' :
-							self.get_users_online(Y, conn, data.params);
-							self.get_sessions(Y, conn, server_url, data.params);
-							break;
-
-						// When a user goes offline.
-						case 'remove_users' :
-							self.remove_users_offline(Y, conn, data.params);
-							break;
-
-						// When the current user starts a session.	
-						case 'start_session' :
-							self.start_session(Y, conn, server_url, data.params, true);
-							break;
-
-						// When the current user or other user posts a message to a session.	
-						case 'post_message' :
-							self.post_message(Y, conn, server_url, data.params);
-							break;
-					}
-				}
-
-		    };
-
-			conn.onerror = function() {
-				conn.close();
-			};
-
-			conn.onclose = function() {
-				self.error(Y, 'connection-lost');
-			};
+			this.start_connection(Y, server_name, server_port, server_url, user);
 		}
 		else {
 			// The user browser doesn't support WebSockets
-			self.error(Y, 'no-support');
+			this.error(Y, 'no-support');
 		}
+	},
+	
+	
+	/**
+	 * Start connection with the server
+	 * @param object Y - YUI 3 object.
+	 * @param string server_name - the server name.
+	 * @param string server_port - the server port.
+	 * @param string server_url - the server url.
+	 * @param object imgs - the images urls needed.
+	 */
+	start_connection : function(Y, server_name, server_port, server_url, user) {
+		var self = this, conn = new WebSocket('ws://'+server_name+':'+server_port);
+
+		conn.onopen = function() {
+
+			// Update Status to Online
+			self.update_status(Y, conn, user.id, 'online');
+		};
+
+		conn.onmessage = function(msg) {
+			// Parse data received.
+	        var data = Y.JSON.parse(msg.data);
+
+			if(data.action && data.params) {
+				switch(data.action) {
+
+					// When the current user or other user goes online.
+					case 'get_users_and_sessions' :
+						self.get_users_online(Y, conn, data.params);
+						self.get_sessions(Y, conn, server_url, data.params);
+						break;
+
+					// When a user goes offline.
+					case 'remove_users' :
+						self.remove_users_offline(Y, conn, data.params);
+						break;
+
+					// When the current user starts a session.	
+					case 'start_session' :
+						self.start_session(Y, conn, server_url, data.params, true);
+						break;
+
+					// When the current user or other user posts a message to a session.	
+					case 'post_message' :
+						self.post_message(Y, conn, server_url, data.params);
+						break;
+				}
+			}
+
+	    };
+
+		conn.onerror = function() {
+			conn.close();
+		};
+
+		conn.onclose = function() {
+			setTimeout(function() {
+				self.start_connection(Y, server_name, server_port, server_url, user);
+			}, 5000);
+			
+			Y.all('.chat_window').remove(true);
+			
+			self.error(Y, 'connection-lost');
+		};
 	},
 	
 	
@@ -240,7 +258,7 @@ M.block_gchat = {
 
 		//Item click event to start a session with the user
 		item_div.on('click', function(event) {
-			var id = this.getAttribute('id').toString().split('_')[3];
+			var id = this.getAttribute('id').toString().split('_')[2];
 
 			var params = {};
 			params.from_id = self.user.id;
@@ -557,7 +575,7 @@ M.block_gchat = {
 		var last_user = null;
 		if(chat_window_last_user) {
 			last_user = chat_window_last_user.getAttribute('class').toString().split(' ')[1];
-			last_user = last_user.split('_')[3];
+			last_user = last_user.split('_')[2];
 		}
 
 		if(last_user != params.user.id) {
