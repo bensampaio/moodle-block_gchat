@@ -4,7 +4,7 @@
  * Strings for component 'block_gchat', language 'pt', branch 'MOODLE_20_STABLE'
  *
  * @package   block_gchat
- * @copyright 2012 Bruno Sampaio
+ * @copyright 2013 Bruno Sampaio
  */
 
 $string['pluginname'] = 'Chat Global';
