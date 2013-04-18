@@ -1,4 +1,4 @@
-<?
+<?php
 /**
  * Lib functions for 'block_gchat' component.
  * @copyright 2012 Bruno Sampaio
