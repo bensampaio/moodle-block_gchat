@@ -27,7 +27,6 @@ class block_gchat_server implements MessageComponentInterface {
 		//Parse data received.
 		$data = json_decode($data);
 		echo $data->action.'<br/>';
-		print_r($data->params);
 		
 		if(isset($data->action) && isset($data->params)) {
 			switch($data->action) {

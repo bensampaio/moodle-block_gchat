@@ -14,13 +14,15 @@
 	height: 280px;
 	border-style: solid;
 	border-bottom: 0;
+	top: 100%;
 	right: 0;
-	bottom: 0;
-	position: absolute;
+	margin-top: -280px;
+	position: fixed;
 }
 
 #gchat .chat_window.collapsed {
 	height: 30px;
+	margin-top: -30px;
 }
 
 #gchat .chat_window,

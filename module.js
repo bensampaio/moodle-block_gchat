@@ -32,12 +32,6 @@ M.block_gchat = {
 		var chat = Y.Node.create('<div id="gchat"></div>');
 		container.append(chat);
 
-		// Scroll Event
-		container.on('scroll', function(event) {
-			var chat_windows = chat.all('.chat_window');
-			chat_windows.setStyle('bottom', (-this.get('scrollTop'))+'px');
-		});
-
 		// Check browser support for WebSockets
 		if ("WebSocket" in window) {
 			
@@ -349,7 +343,6 @@ M.block_gchat = {
 					chat_window.setAttribute('id', chat_window_id);
 					chat_window.addClass('chat_window gchat_userto_'+params.userto.id);
 					chat_window.setStyle('right', right_space+'px');
-					chat_window.setStyle('bottom', (-Y.one(this.chat_container).get('scrollTop'))+'px');
 					chat.append(chat_window);
 
 					// Window Header
