@@ -59,9 +59,10 @@ function block_gchat_update_user_status($user_id, $status) {
  * @param int $user_id - the current user unique identifier.
  */
 function block_gchat_get_online_users($user_id) {
-	global $DB, $OUTPUT;
+	global $CFG, $DB, $OUTPUT;
 	
 	$data = array();
+	$groupBy = ($CFG->dbtype == 'pgsql')? '' : "GROUP BY ue1.userid";
 	
 	$query = 
 		"SELECT DISTINCT(ue1.userid), ue1.enrolid,
@@ -77,7 +78,7 @@ function block_gchat_get_online_users($user_id) {
 			) AND
 			ue1.userid != ? AND
 			chat_users.status = 'online'
-		GROUP BY ue1.userid
+		$groupBy	
 		ORDER BY {user}.firstname, {user}.lastname";
 
 	//Get current user info
@@ -193,13 +194,15 @@ function block_gchat_start_session($from_id, $to_id) {
  * @return array $data - all sessions data.
  */
 function block_gchat_get_all_open_sessions($user_id) {
-	global $DB;
+	global $CFG, $DB;
+	$userfromConcat = ($CFG->dbtype == 'pgsql')? "(userfrom.firstname|| ' '|| userfrom.lastname)" : "CONCAT(userfrom.firstname, ' ', userfrom.lastname)";
+	$usertoConcat = ($CFG->dbtype == 'pgsql')? "(userto.firstname|| ' '|| userto.lastname)" : "CONCAT(userto.firstname, ' ', userto.lastname)";
 	
 	$query = 
 		"SELECT {".CHAT_SESSIONS_TABLE."}.id, 
 			{".CHAT_SESSIONS_TABLE."}.userfrom, {".CHAT_SESSIONS_TABLE."}.userto,
-			CONCAT(userfrom.firstname, ' ', userfrom.lastname) as userfrom_name,
-			CONCAT(userto.firstname, ' ', userto.lastname) as userto_name,
+			$userfromConcat as userfrom_name,
+			$usertoConcat as userto_name,
 			{".CHAT_USER_SESSIONS_TABLE."}.isopen, {".CHAT_USER_SESSIONS_TABLE."}.unseen
 			FROM {".CHAT_SESSIONS_TABLE."}
 			INNER JOIN {".CHAT_USER_SESSIONS_TABLE."} 
