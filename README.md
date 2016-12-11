@@ -1,9 +1,8 @@
-GLOBAL CHAT - MOODLE BLOCK
+# GLOBAL CHAT - MOODLE BLOCK
 
 **IMPORTANT**: I am no longer maintaining this plugin. However if you require changes to it you can submit a Merge Request and I will gladly have a look into it.
 
-DESCRIPTION
------------
+## DESCRIPTION
 
 This plugin introduces a chat for Moodle very similar to Google Chat or Facebook Chat. It uses a block to list all online users that are part of all courses a user is subscribed to, and opens a chat window on the bottom of the page when a online user is clicked.
 
@@ -18,8 +17,7 @@ If you are a teacher use it to communicate with your students individually.
 We believe Moodle needs a different chat concept, that's why we decided to create this plugin. It still needs some improvement, but first we would like to know what people think about this idea :)
 
 
-CONTENTS ORGANISATION
----------------------
+## CONTENTS ORGANISATION
 
 	FOLDERS:
 	- db: contains the "install.xml" file with database structure and the "access.php" file needed for Moodle 2.4;
@@ -41,8 +39,7 @@ CONTENTS ORGANISATION
 	- version.php: block version information;
 	
 
-HOW TO USE
-----------
+## HOW TO USE
 
 To use this plugin you must run a CLI script which will be responsible for managing the chat sessions and the communication between users. This script initialises a server that uses the WebSocket protocol to establish a connection between users, avoiding the need for ajax requests. With this approach the client browser doesn't need to constantly ask the server if there are updates because the server will send new data when other user starts a conversations or sends a message.
 
