@@ -32,7 +32,7 @@ class block_gchat extends block_list {
 			$this->content->footer = '';
 			
 			$this->content->items[] = 
-				'<img class="icon" src="'.$OUTPUT->pix_url('i/loading_small').'" />'.
+				'<img class="icon" src="'.$OUTPUT->image_url('i/loading_small').'" />'.
 				get_string('loading', 'block_gchat').'...';
 			
 			
@@ -45,15 +45,15 @@ class block_gchat extends block_list {
 				array('id' => $USER->id, 'name' => $USER->firstname.' '.$USER->lastname),
 				array(
 					'close' => array(
-						'img' => (string) $OUTPUT->pix_url('close', 'block_gchat'),
+						'img' => (string) $OUTPUT->image_url('close', 'block_gchat'),
 						'visibility' => 1
 					),
 					'minimize' => array(
-						'img' => (string) $OUTPUT->pix_url('minimize', 'block_gchat'),
+						'img' => (string) $OUTPUT->image_url('minimize', 'block_gchat'),
 						'visibility' => 1
 					),
 					'maximize' => array(
-						'img' => (string) $OUTPUT->pix_url('maximize', 'block_gchat'),
+						'img' => (string) $OUTPUT->image_url('maximize', 'block_gchat'),
 						'visibility' => 0
 					)
 				)
